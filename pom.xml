@@ -98,14 +98,14 @@
 	
 	    <repository>
 	      <id>nexus</id>
-	      <name>Mithun Technologies Releases Nexus Repository</name>
-	      <url>http://172.31.40.252/manojdevops/repository/Apple-release/</url>
+	      <name>Apple Release Repo</name>
+	      <url>http://13.235.50.48:9980/manojdevops/repository/Apple-release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
-	      <name>Mithun Technologies Snapshot Nexus Repository </name>
-	      <url>http://172.31.40.252/manojdevops/repository/Apple-snapshot/</url>
+	      <name>Apple snapshot Repo</name>
+	      <url>http://13.235.50.48:9980/manojdevops/repository/Apple-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
