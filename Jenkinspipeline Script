@@ -1,6 +1,6 @@
 node{
 
-def mavenhome = tool name: "maven3.8.6"
+def mavenhome = tool name: "maven3.8.2"
 
 echo "Jenkinks URL is: ${env.JENKINS_URL}"
 echo "Node Name is: ${env.NODE_NAME}"
