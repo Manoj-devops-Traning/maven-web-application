@@ -99,13 +99,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>Apple Release Repo</name>
-	      <url>http://35.154.174.69:9980/manojdevops/repository/Apple-release/</url>
+	      <url>http://172.31.40.252:9980/manojdevops/repository/Apple-release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>Apple snapshot Repo</name>
-	      <url>http://35.154.174.69:9980/manojdevops/repository/Apple-snapshot/</url>
+	      <url>http://172.31.40.252:9980/manojdevops/repository/Apple-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
