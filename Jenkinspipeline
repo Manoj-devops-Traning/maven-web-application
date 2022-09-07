@@ -1,55 +1,63 @@
 node{
 
-def mavenhome = tool name: "maven3.8.6"
+def mavenHome = tool name: "maven3.8.6"
 
-echo "Jenkinks URL is: ${env.JENKINS_URL}"
+echo "Jenkins url is: ${env.JENKINS_URL}"
 echo "Node Name is: ${env.NODE_NAME}"
-echo "Job Name is: ${env.JOB_NAME}"
+echo "Job name is: ${env.JOB_NAME}"
 
-timestamps {
-    // some block
-}
 
-properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '6', daysToKeepStr: '', numToKeepStr: '6')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
+
+
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
+
 
 try{
-stage('CheckOutcode'){
-git branch: 'development', credentialsId: 'd83c8a2f-7d31-4842-8597-8c04fc0e362b', url: 'https://github.com/Manoj-devops-Traning/maven-web-application.git'
+
+slackNotifications('STARTED')
+
+stage('CheckOutCode'){
+git branch: 'development', credentialsId: '166c70a2-1df5-4993-a566-0a795862da8c', url: 'https://github.com/MithunTechnologiesDevOps/maven-web-application.git'
 }
 
 stage('Build'){
-sh "${mavenhome}/bin/mvn clean package"
+sh "${mavenHome}/bin/mvn clean package"
 }
 
-
-stage('ExecutesonarQubeReport'){
-sh "${mavenhome}/bin/mvn clean sonar:sonar"
-}
-stage('UploadArtifactIntoAritifactsrepo'){
-sh "${mavenhome}/bin/mvn clean deploy"
-}
-stage('DeployAppintoTomcatserver')
-sshagent(['d482a821-c76e-4a46-8b59-da57ceea18a8']) {
- sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@43.205.126.128:/opt/apache-tomcat-9.0.65/webapps/"
-}
+/*
+stage('ExecuteSonarQubeReport'){
+sh "${mavenHome}/bin/mvn clean sonar:sonar"
 }
 
-}// try block closing
+stage('UploadArtifcatsIntoArtifactoryRepo'){
+sh "${mavenHome}/bin/mvn clean deploy2"
+}
+
+stage('DeployAppIntoTomcatServer'){
+sshagent(['dc292b7a-3b39-4630-9fc3-1b806b54412c']) {
+ sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war  ec2-user@172.31.7.80:/opt/apache-tomcat-9.0.65/webapps/"
+}
+}
+*/
+
+}//try block closing
 catch (e){
-slackNotification(currentBuild.result)
+slackNotifications('FAILED')
 throw e
 }
 finally{
-slackNotification(currentBuild.result)
+slackNotifications(currentBuild.result)
 }
+
 
 }//Node closing
 
-//code snippet for sending slack notification
+//Code Snippet for sending slack notifications.
 
-def slackNotification(String buildStatus = 'STARTED') {
+def slackNotifications(String buildStatus = 'STARTED') {
   // build status of null means successful
-  buildStatus =  buildStatus ?: 'SUCCESSFUL'
+  //buildStatus =  buildStatus ?: 'SUCCESS'
+  buildStatus = buildStatus ? "SUCCESS":"FAILURE"
 
   // Default values
   def colorName = 'RED'
@@ -61,7 +69,7 @@ def slackNotification(String buildStatus = 'STARTED') {
   if (buildStatus == 'STARTED') {
     colorName = 'YELLOW'
     colorCode = '#FFFF00'
-  } else if (buildStatus == 'SUCCESSFUL') {
+  } else if (buildStatus == 'SUCCESS') {
     colorName = 'GREEN'
     colorCode = '#00FF00'
   } else {
@@ -70,5 +78,5 @@ def slackNotification(String buildStatus = 'STARTED') {
   }
 
   // Send notifications
-  slackSend (color: colorCode, message: summary)
+  slackSend (color: colorCode, message: summary, channel: "#walmart")
 }
