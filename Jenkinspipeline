@@ -13,6 +13,9 @@ timestamps {
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '6', daysToKeepStr: '', numToKeepStr: '6')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
 
 try{
+
+slackNotifications('STARTED')
+
 stage('CheckOutcode'){
 git branch: 'development', credentialsId: 'd83c8a2f-7d31-4842-8597-8c04fc0e362b', url: 'https://github.com/Manoj-devops-Traning/maven-web-application.git'
 }
