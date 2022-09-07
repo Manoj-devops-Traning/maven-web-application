@@ -17,7 +17,7 @@ try{
 slackNotification('STARTED')
 
 stage('CheckOutcode'){
-git branch: 'development', credentialsId: 'd83c8a2f-7d31-4842-8597-8c04fc0e362b', url: 'https://github.com/Manoj-devops-Traning/maven-web-application.git'
+git branch: 'devlopment', credentialsId: 'd83c8a2f-7d31-4842-8597-8c04fc0e362b', url: 'https://github.com/Manoj-devops-Traning/maven-web-application.git'
 }
 
 stage('Build'){
@@ -39,7 +39,7 @@ sshagent(['d482a821-c76e-4a46-8b59-da57ceea18a8']) {
 
 }// try block closing
 catch (e){
-slackNotification(currentBuild.result)
+slackNotification('FAILED')
 throw e
 }
 finally{
